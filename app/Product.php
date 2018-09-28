@@ -12,8 +12,8 @@ class Product extends Model
     const UNAVAILABLE_PRODUCT='unavailable';
     protected $fillable=[
         'name',
-        'descrionton',
-        'quanitty',
+        'description',
+        'quantity',
         'status',
         'image',
         'seller_id',
