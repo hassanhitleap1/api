@@ -25,3 +25,9 @@ $factory->define(App\User::class, function (Faker $faker) {
         'admin'=>  $faker->randomElement([User::REGULER_USER, User::ADMIN_USER]),
     ];
 });
+$factory->define(App\Category::class, function (Faker $faker) {
+    return [
+        'name' => $faker->word,
+        'description' => $faker->paragraph(1),
+    ];
+});
