@@ -11,7 +11,7 @@ class User extends Authenticatable
     use Notifiable;
     const VERIFIED='1';
     const UN_VERIFIED='0';
-    const USER_ADMIN='true';
+    const ADMIN_USER ='true';
     const REGULER_USER='false';
 
     /**
@@ -49,7 +49,7 @@ class User extends Authenticatable
     }
 
 
-    public function genrateVerifactionCode(){
+    public  static function genrateVerifactionCode(){
         return random_str(40);
     }
 }

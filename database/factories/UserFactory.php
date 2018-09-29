@@ -1,6 +1,7 @@
 <?php
 
 use Faker\Generator as Faker;
+use App\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +18,10 @@ $factory->define(App\User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
-        'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
+        'password' => bcrypt('123456'), // secret
         'remember_token' => str_random(10),
+        'verified'=> $verified= $faker->randomElement([User::VERIFIED,User::UN_VERIFIED]),
+        'verification_code'=>($verified)?null:User::genrateVerifactionCode(),
+        'admin'=>  $faker->randomElement([User::REGULER_USER, User::ADMIN_USER]),
     ];
 });
