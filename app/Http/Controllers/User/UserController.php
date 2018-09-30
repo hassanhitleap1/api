@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 
+
 class UserController extends Controller
 {
     /**
@@ -16,7 +17,7 @@ class UserController extends Controller
     public function index()
     {
         $users= User::all();
-        return response()->json(['data'=>$users],200);
+        return response()->json(['data'=>$users,'code'=>200],200);
     }
 
 
@@ -28,7 +29,21 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $rules=[
+            'name'=>'required',
+            'email'=>'email|required|unique:users',
+            'password'=>'required|min:6|confirmed',
+        ];
+
+        $this->validate($request,$rules);
+        $data=$request->all();
+        $data['password']= bcrypt($data['password']);
+        $data['verified']= User::UN_VERIFIED;
+        $data['verifiecation_code']=User::genrateVerifactionCode();
+        $data['admin']= User::REGULER_USER;
+        $user =User::create($data);
+        return response()->json(['data'=>$user,'code'=>201],201);
     }
 
     /**
