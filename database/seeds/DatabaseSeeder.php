@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        DB::statement('SET FOREIGN_KEY_CHCKES =1 ');
+        DB::statement('SET foreign_key_checks= 0');
         User::truncate();
         Category::truncate();
         Product::truncate();
@@ -29,15 +29,15 @@ class DatabaseSeeder extends Seeder
         $productsQuantity=1000;
         $transctionsQuantity=1000;
 
-        factory(User::class,$usersQuantity)-create();
+        factory(User::class, $usersQuantity)->create();
 
-        factory(Category::class,$categoryQuantity)-create();
+        factory(Category::class,$categoryQuantity)->create();
 
-        factory(Product::class,$productsQuantity)-create()->each(function($product){
-            $categories=Category::all()->random(mt_rand(1,5))->plack('id');
+        factory(Product::class,$productsQuantity)->create()->each(function($product){
+            $categories=Category::all()->random(mt_rand(1,3))->pluck('id');
             $product->categories()->attach($categories);
         });
 
-        factory(Transaction::class,$transctionsQuantity)-create();
+        factory(Transaction::class,$transctionsQuantity)->create();
     }
 }
