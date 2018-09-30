@@ -93,13 +93,13 @@ class UserController extends ApiController
 
         if($request->has('admin')){
             if(! $user->isVerified){
-                return response()->json(['error'=>' only verified users can modified admin fialed ' ,'code'=>409],409);
+                return $this->errorResponce('only verified users can modified admin fialed ' ,409);
             }
             $user->admin= $request->admin;
         }
        
         if($user->isDirty){
-            return response()->json(['error'=>' you need defirante value to update  ' ,'code'=>422],422);  
+            return $this->errorResponce('you need defirante value to update',422);  
         }
         $user->save();
         return response()->json(['data'=>$user,'code'=>201],201);
