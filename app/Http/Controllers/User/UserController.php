@@ -18,7 +18,7 @@ class UserController extends ApiController
     public function index()
     {
         $users= User::all();
-        return response()->json(['data'=>$users,'code'=>200],200);
+        return $this->showAll($users);
     }
 
 
@@ -44,7 +44,7 @@ class UserController extends ApiController
         $data['verifiecation_code']=User::genrateVerifactionCode();
         $data['admin']= User::REGULER_USER;
         $user =User::create($data);
-        return response()->json(['data'=>$user,'code'=>201],201);
+        return $this->showOne($user,201);
     }
 
     /**
@@ -56,19 +56,9 @@ class UserController extends ApiController
     public function show($id)
     {
         $user= User::findOrFail($id);
-        return response()->json(['data'=>$user],200);
+        return $this->showOne($user);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -125,6 +115,6 @@ class UserController extends ApiController
     {
         $user= User::findOrFail($id);
         $user->delete();
-        return response()->json(['data'=>$user,'code'=>201],201);
+        return $this->showOne($user,201);
     }
 }

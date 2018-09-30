@@ -16,7 +16,7 @@ trait ApiResponser{
     }
 
     public function showAll(Collection $collection,$code=200){
-        return $this->successResponce(['data'=>$collection ,'code'=>$code]);
+        return $this->successResponce($collection ,$code);
     }
 
     public function showOne(Model $model,$code=200){
