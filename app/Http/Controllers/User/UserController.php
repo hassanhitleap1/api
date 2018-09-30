@@ -78,7 +78,40 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user= User::findOrFail($id);
+        
+        $rules=[
+            'email'=>'email|unique:users,email,',$user->id,
+            'password'=>'min:6|confirmed',
+            'admin'=>'in:'.User::ADMIN_USER.','.User::REGULER_USER,
+        ];
+       
+        if($request->has('name')){
+         $user->name= $request->name ; 
+        }
+        
+        if($request->has('email') && $user->email != $request->email){
+            $user->verified=User::UN_VERIFIED;
+            $user->validation_code=User::genrateVerifactionCode();
+            $user->email= $request->email;
+        }
+
+        if($request->has('password')){
+            $user->password = bcrypt($request->password);
+        }
+
+        if($request->has('admin')){
+            if(! $user->isVerified){
+                return response()->json(['error'=>' only verified users can modified admin fialed ' ,'code'=>409],409);
+            }
+            $user->admin= $request->admin;
+        }
+       
+        if($user->isDirty){
+            return response()->json(['error'=>' you need defirante value to update  ' ,'code'=>422],422);  
+        }
+        $user->save();
+        return response()->json(['data'=>$user,'code'=>201],201);
     }
 
     /**
