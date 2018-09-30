@@ -20,6 +20,6 @@ trait ApiResponser{
     }
 
     public function showOne(Model $model,$code=200){
-        return $this->successResponce(['data'=>$model, 'code'=>$code]);
+        return $this->successResponce($model, $code);
     }
 } 
