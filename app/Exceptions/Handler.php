@@ -87,9 +87,12 @@ class Handler extends ExceptionHandler
                 related with any other resoreces '
                 ,409);
             }
-           
         }
-        return parent::render($request, $exception);
+
+        if(config('app.debug')){
+            return parent::render($request, $exception);
+        }
+        return $this->errorResponce('the have and error please try later ',500);
     }
 
 
