@@ -12,6 +12,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -73,6 +74,9 @@ class Handler extends ExceptionHandler
         }
         if ($exception instanceof NotFoundHttpException){
             return $this->errorResponce('the Url specify can not be found ',404);
+        }
+        if ($exception instanceof HttpException){
+            return $this->errorResponce($exception->getMessage(),$exception->getStatusCode());
         }
         return parent::render($request, $exception);
     }
