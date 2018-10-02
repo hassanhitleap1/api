@@ -8,6 +8,7 @@ use App\Traits\ApiResponser;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class Handler extends ExceptionHandler
 {
@@ -56,10 +57,13 @@ class Handler extends ExceptionHandler
         }
         if ($exception instanceof ModelNotFoundException){
             $modelName= strtolower(class_basename($exception->getModel()));
-            return $this->errorResponce('does not exist  any {$modelName} with spisivy identfartuy ',404);
+            return $this->errorResponce('model not found in model '. $modelName.' with spisivy identfartuy ',404);
         }
         if ($exception instanceof AuthenticationException){
             return $this->unauthenticated($request,$exception);
+        }
+        if ($exception instanceof AuthorizationException){
+            return $this->errorResponce($exception->getMessage(),403);
         }
         return parent::render($request, $exception);
     }
