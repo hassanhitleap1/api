@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use App\Category;
 use App\Transaction;
 use App\Seller;
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Product extends Model
 {
+    use SoftDeletes;
     const AVAILABLE_PRODUCT='available';
     const UNAVAILABLE_PRODUCT='unavailable';
     protected $fillable=[
@@ -18,6 +20,7 @@ class Product extends Model
         'image',
         'seller_id',
     ];
+    protected $dates=['deleted_at'];
 
 
     public function isAvailable(){
