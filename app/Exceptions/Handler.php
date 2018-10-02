@@ -9,6 +9,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Access\AuthorizationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -52,18 +53,21 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        IF($exception instanceof ValidationException){
+        if($exception instanceof ValidationException){
             return $this->convertValidationExceptionToResponse($exception,$request);
         }
         if ($exception instanceof ModelNotFoundException){
             $modelName= strtolower(class_basename($exception->getModel()));
-            return $this->errorResponce('model not found in model '. $modelName.' with spisivy identfartuy ',404);
+            return $this->errorResponce('model not found in model '. $modelName.' with specify identfarty ',404);
         }
         if ($exception instanceof AuthenticationException){
             return $this->unauthenticated($request,$exception);
         }
         if ($exception instanceof AuthorizationException){
             return $this->errorResponce($exception->getMessage(),403);
+        }
+        if ($exception instanceof NotFoundHttpException){
+            return $this->errorResponce('the Url specify can not be found ',404);
         }
         return parent::render($request, $exception);
     }
