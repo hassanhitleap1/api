@@ -47,9 +47,9 @@ class CategoryController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Category $category)
     {
-        //
+        return $this->showOne($category);
     }
 
     /**
