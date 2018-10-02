@@ -13,6 +13,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Database\QueryException;
 
 class Handler extends ExceptionHandler
 {
@@ -77,6 +78,16 @@ class Handler extends ExceptionHandler
         }
         if ($exception instanceof HttpException){
             return $this->errorResponce($exception->getMessage(),$exception->getStatusCode());
+        }
+        if ($exception instanceof QueryException){
+            $errorCode= $exception->errorInfo[1];
+            dd($exception);
+            if ($errorCode == 1451){
+                return $this->errorResponce('acnot remove the resoruce prmantly it is 
+                related with any other resoreces '
+                ,409);
+            }
+           
         }
         return parent::render($request, $exception);
     }
