@@ -41,9 +41,12 @@ Route::resource('sellers','Seller\SellerController',['only'=>['index','show']]);
 Route::resource('transactions','Transaction\TransactionController',['only'=>['index','show']]);
 
 
+
 /**
  * route for users
 */
 Route::resource('users','User\UserController',['except'=>['create','edit']]);
+
+
 
 
