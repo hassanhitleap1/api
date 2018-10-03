@@ -77,9 +77,19 @@ class CategoryController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        //
+      $category->fill($request->intersect([
+          'name',
+          'description',
+      ]));  
+      
+      if($category->isClean()){
+          return $this->errorResponce('you need to spacify  any deffriante value to update ',422);
+      }
+
+      $category->save();
+      return $this->showOne($category);
     }
 
     /**
