@@ -13,7 +13,7 @@ class Category extends Model
         'name',
         'description',
     ];
-    protected $heddin=[
+    protected $hidden=[
         'pivot'
     ];
     protected $dates=['deleted_at'];
