@@ -13,6 +13,9 @@ class Category extends Model
         'name',
         'description',
     ];
+    protected $heddin=[
+        'pivot'
+    ];
     protected $dates=['deleted_at'];
 
     public function products(){
