@@ -25,6 +25,7 @@ Route::resource('buyers.categories','Buyer\BuyerProductController',['only'=>['in
  * route for categories
 */
 Route::resource('categories','Category\CategoryController',['except'=>['create','edit']]);
+Route::resource('categories.products','Category\CategoryProductController',['only'=>['index']]);
 
 
 /**
