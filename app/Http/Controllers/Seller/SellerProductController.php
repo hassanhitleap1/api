@@ -56,10 +56,34 @@ class SellerProductController extends ApiController
      * @param  \App\Seller  $seller
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Seller $seller)
+    public function update(Request $request, Seller $seller,Product $product)
     {
-        //
-    }
+        $rules=[
+            'quantity'=>'integer|min:1',
+            'status'=>'in'.Product::AVAILABLE_PRODUCT.','.Product::AVAILABLE_PRODUCT,
+            'iamge'=>'image',
+        ];
+
+        $this->validate();
+        $this->checkSeller($seller,$product);
+        $this->fill($request->intersect([
+            'name',
+            'description',
+            'quantity',
+         ]));
+
+         if($request->has('status')){
+             $product->status =$request->status;
+            if($product->isAvailable() && $product->categories()->count() ==0){
+                return $this->errorResponce('an active this product must be have lest one categories',409);  
+            }
+         } 
+         if($product->isClean()){
+            return $this->errorResponce('deffrat value is update ',422);  
+        }
+        $product->save();
+        $this->showOne($product);
+    }  
 
     /**
      * Remove the specified resource from storage.
@@ -70,5 +94,12 @@ class SellerProductController extends ApiController
     public function destroy(Seller $seller)
     {
         //
+    }
+
+    protected function checkSeller(Seller $seller, Product $product){
+
+        if($seller->id != $product->seller_id){
+            throw new HttpExaption(404,'the spacefiy actual in snotsller or prohct');
+        }
     }
 }
