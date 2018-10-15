@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
 use App\Category;
 
-class ProductCtegoryController extends ApiController
+class ProductCategoryController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -40,8 +40,12 @@ class ProductCtegoryController extends ApiController
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(Product $product,Category $category)
     {
-        //
+        if(!$product->categories()->find($category->id)){
+            $this->errorResponce('the piscficed catgory is not a ctegory of this product ',409);
+        }
+        $product->categories()->detach($category->id);
+        return $this->showAll( $product->categories);
     }
 }
